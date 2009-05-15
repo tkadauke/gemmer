@@ -1,0 +1,3 @@
+require 'gemmer'
+
+gemmer 'gem_name'
