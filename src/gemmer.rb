@@ -22,8 +22,13 @@ def gemmer(gem_name)
   package = "pkg/#{gem_name}-#{spec.version}.gem"
 
   desc "Build gem"
-  task :default => "pkg/#{gem_name}-#{spec.version}.gem" do
+  task :default => package do
     puts "generated latest version"
+  end
+  
+  desc "Install gem locally"
+  task :install => :default do
+    system "gem install #{package}"
   end
 
   desc "Release gem"
