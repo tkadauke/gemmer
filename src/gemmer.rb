@@ -19,7 +19,8 @@ def gemmer(gem_name)
     end
   end
 
-  package = "pkg/#{gem_name}-#{spec.version}.gem"
+  file_name = "#{gem_name}-#{spec.version}.gem"
+  package = "pkg/#{file_name}"
 
   desc "Build gem"
   task :default => package do
@@ -35,6 +36,14 @@ def gemmer(gem_name)
   task :release => package do
     system "scp #{package} deploy@dev01.berlin.imedo.de:~/gems"
     system "ssh deploy@dev01.berlin.imedo.de 'cd ~/gems; sudo gem install --no-ri #{File.basename(package)}'"
+  end
+  
+  desc "Push gem to production"
+  task :push => package do
+    ['app01.imedo.de', 'app02.imedo.de', 'app03.imedo.de', 'app04.imedo.de'].each do |server|
+      system "scp #{package} deploy@#{server}:~/"
+      system "ssh deploy@#{server} 'sudo gem install #{file_name}; rm #{file_name}'"
+    end
   end
 
   desc "Generate documentation for #{gem_name}."
