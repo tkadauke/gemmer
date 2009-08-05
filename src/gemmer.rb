@@ -11,13 +11,6 @@ def gemmer(gem_name)
     pkg.need_tar = true
   end
 
-  desc 'Test the gem.'
-  task :test do
-    Dir["test/*.rb"].each do |test|
-      puts `ruby #{test}`
-    end
-  end
-
   file_name = "#{gem_name}-#{spec.version}.gem"
   package = "pkg/#{file_name}"
 
