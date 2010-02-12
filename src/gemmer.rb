@@ -26,18 +26,9 @@ def gemmer(gem_name)
 
   desc "Release gem"
   task :release => package do
-    system "scp #{package} deploy@dev01.berlin.imedo.de:~/gems"
-    system "ssh deploy@dev01.berlin.imedo.de 'cd ~/gems; sudo gem install --no-ri #{File.basename(package)}'"
+    system "scatter push #{package} dev01"
   end
   
-  desc "Push gem to production"
-  task :push => package do
-    ['app01.imedo.de', 'app02.imedo.de', 'app03.imedo.de', 'app04.imedo.de'].each do |server|
-      system "scp #{package} deploy@#{server}:~/"
-      system "ssh deploy@#{server} 'sudo gem install #{file_name}; rm #{file_name}'"
-    end
-  end
-
   desc "Generate documentation for #{gem_name}."
   Rake::RDocTask.new(:rdoc) do |rdoc|
     rdoc.rdoc_dir = 'rdoc'
