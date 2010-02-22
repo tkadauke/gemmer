@@ -15,12 +15,12 @@ def gemmer(gem_name)
   package = "pkg/#{file_name}"
 
   desc "Build gem"
-  task :default => package do
+  task :build => package do
     puts "generated latest version"
   end
   
   desc "Install gem locally"
-  task :install => :default do
+  task :install => package do
     system "gem install #{package}"
   end
 
