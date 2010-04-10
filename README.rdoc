@@ -1,3 +1,109 @@
-require 'gemmer'
+= gemmer
 
-gemmer 'gem_name'
+Author::    Thomas Kadauke  - tkadauke (at) imedo.de
+Copyright:: Copyright (c) 2010 Thomas Kadauke
+Licence::   MIT
+Git::       http://github.com/tkadauke/gemmer
+
+Simplify rake tasks for Rubygems. It is a little bit like jeweler, but less complicated and it allows you to distribute your gem to your internal servers. In contrast to jeweler, it is really just a way to keep your Rakefile DRY, without taking control over your whole gem.
+
+== Dependencies
+
+* rubygems
+* active_support
+
+== Installation
+
+Install from rubygems.org:
+
+  sudo gem install gemmer
+
+Install from source
+
+  git clone git://github.com/tkadauke/gemmer
+  cd gemmer
+  sudo rake install
+
+== Usage
+
+Add the following code to your gem's Rakefile
+
+  begin
+    require 'gemmer'
+  
+    Gemmer::Tasks.new('my_gem')
+  rescue LoadError
+    puts "Gemmer not available. Install it with: gem install gemmer"
+  end
+
+replace 'my_gem' with the name of your gem. If you want to release your gem to the public and/or on private internal machines, you can easily define release tasks like so:
+
+  Gemmer::Tasks.new('my_gem') do |t|
+    # to release the gem to rubygems.org
+    t.release_via :rubygems
+    # to release the gem to a remote machine
+    t.release_via :ssh, :to => 'some_host', :username => 'me', :use_sudo => true
+  end
+
+Gemmer will then define tasks to build your gem, install/uninstall it locally, and in the latter case release them to rubygems.org, and via SSH to host 'some_host'.
+
+== Building / Installing
+
+Used to its bare minimum, gemmer defines tasks to build and install your gem:
+
+  rake build
+  rake install
+  rake uninstall
+  rake reinstall
+
+Note that the install tasks might require root privileges, so prefix them with sudo:
+
+  sudo rake install
+  sudo rake uninstall
+  sudo rake reinstall
+
+== Releasing
+
+There are several ways to release a gem using gemmer. You can specify multiple release targets. Each will get its own task in the release namespace. To release to every target at once, use
+
+  rake release
+
+=== Release on rubygems.org
+
+To release on rubygems.org, use gemmer like this in your Rakefile:
+
+  Gemmer::Tasks.new('my_gem') do |t|
+    t.release_via :rubygems
+  end
+
+Then, gemmer generates the task
+
+  rake release:rubygems
+
+=== Release via SSH on a remote machine
+
+This is where gemmer really shines. It allows you to release a gem to a remote machine (possibly an internal server), so gemmer is perfectly suitable for handling and distributing your internal or private gems. Use like this in your Rakefile:
+
+  Gemmer::Tasks.new('my_gem') do |t|
+    t.release_via :ssh, :to => 'my_host', :username => 'me', :use_sudo => true
+  end
+
+And you will get the task
+
+  rake release:my_host
+
+=== Release via Scatter to a group of hosts
+
+Scatter is a tool to distribute gems on internal and/or production servers. Once configured, you can push any gem to an unlimited number of servers. Scatter uses host names and host groups as targets for your gem. With gemmer, just specify the target name, and you're good to go:
+
+  Gemmer::Tasks.new('my_gem') do |t|
+    t.release_via :scatter, :to => 'my_host_group'
+  end
+
+Then, release with
+
+  rake release:my_host_group
+
+== TODO
+
+- Release to rubyforge

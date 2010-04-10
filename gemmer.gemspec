@@ -1,13 +1,13 @@
 Gem::Specification.new do |s| 
   s.platform  =   Gem::Platform::RUBY
   s.name      =   "gemmer"
-  s.version   =   "0.0.6"
+  s.version   =   "0.0.8"
   s.date      =   Date.today.strftime('%Y-%m-%d')
-  s.author    =   "imedo GmbH"
-  s.email     =   "entwicker@imedo.de"
+  s.author    =   "Thomas Kadauke"
+  s.email     =   "tkadauke@imedo.de"
   s.homepage  =   "http://www.imedo.de/"
-  s.summary   =   "Internal distribution of gems"
-  s.files     =   Dir.glob("{bin,src}/**/*")
+  s.summary   =   "Simple rake tasks for gems"
+  s.files     =   Dir.glob("src/**/*")
 
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.rdoc"]
