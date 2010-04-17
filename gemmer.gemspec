@@ -1,7 +1,7 @@
 Gem::Specification.new do |s| 
   s.platform  =   Gem::Platform::RUBY
   s.name      =   "gemmer"
-  s.version   =   "0.0.8"
+  s.version   =   "0.0.9"
   s.date      =   Date.today.strftime('%Y-%m-%d')
   s.author    =   "Thomas Kadauke"
   s.email     =   "tkadauke@imedo.de"
