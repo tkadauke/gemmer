@@ -144,7 +144,7 @@ module Gemmer #:nodoc:
     def define_rubygems_release_task
       namespace :release do
         desc "Release #{@gem_name} to rubygems.org"
-        task :rubygems do
+        task :rubygems => @package do
           sh "gem push #{@package}"
         end
       end
@@ -155,7 +155,7 @@ module Gemmer #:nodoc:
     def define_ssh_release_task(options)
       namespace :release do
         desc "Release #{@gem_name} to #{options[:to]} via SSH"
-        task options[:to] do
+        task options[:to] => @package do
           ssh_string = "#{options[:username]}@#{options[:host] || options[:to]}"
           sh "scp #{@package} #{ssh_string}:/tmp/"
           sh "ssh #{ssh_string} #{options[:use_sudo]} gem install /tmp/#{@file_name}"
@@ -168,7 +168,7 @@ module Gemmer #:nodoc:
     def define_scatter_release_task(options)
       namespace :release do
         desc "Release #{@gem_name} to #{options[:to]} via scatter"
-        task options[:to] do
+        task options[:to] => @package do
           sh "scatter push #{@package} #{options[:to]}"
         end
       end
