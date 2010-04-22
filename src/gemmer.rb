@@ -168,7 +168,7 @@ module Gemmer #:nodoc:
     def define_scatter_release_task(options)
       namespace :release do
         desc "Release #{@gem_name} to #{options[:to]} via scatter"
-        task :scatter => @package do
+        task options[:to] => @package do
           sh "scatter push #{@package} #{options[:to]}"
         end
       end
