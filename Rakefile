@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/src/gemmer'
 require 'rake/testtask'
 
 Gemmer::Tasks.new('gemmer') do |t|
-  t.release_via :rubygems
+  t.release_via :ssh, :to => "dev01", :username => "deploy", :use_sudo => true
 end
 
 desc 'Default: run unit tests.'
