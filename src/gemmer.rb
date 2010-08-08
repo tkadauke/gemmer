@@ -1,6 +1,6 @@
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
-require 'active_support'
+require 'active_support/core_ext'
 
 # Deprecated. Don't use.
 def gemmer(gem_name)
