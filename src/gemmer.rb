@@ -158,7 +158,7 @@ module Gemmer #:nodoc:
         task options[:to] => @package do
           ssh_string = "#{options[:username]}@#{options[:host] || options[:to]}"
           sh "scp #{@package} #{ssh_string}:/tmp/"
-          sh "ssh #{ssh_string} #{options[:use_sudo]} gem install /tmp/#{@file_name}"
+          sh "ssh #{ssh_string} #{options[:use_sudo] ? 'sudo' : ''} gem install /tmp/#{@file_name}"
         end
       end
       
