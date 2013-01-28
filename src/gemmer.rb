@@ -1,5 +1,6 @@
-require 'rake/gempackagetask'
-require 'rake/rdoctask'
+require 'rubygems/package_task'
+require 'rdoc/task'
+require 'date'
 
 # Deprecated. Don't use.
 def gemmer(gem_name)
@@ -24,6 +25,8 @@ module Gemmer #:nodoc:
   #     t.release_via :scatter, :to => 'my_host_group'
   #   end
   class Tasks
+    include Rake::DSL
+    
     attr_accessor :gemspec_file
     attr_writer   :gemspec_erb_file
     attr_accessor :package_path
@@ -79,7 +82,7 @@ module Gemmer #:nodoc:
     end
     
     def define_gem_tasks
-      Rake::GemPackageTask.new(@spec) do |pkg|
+      Gem::PackageTask.new(@spec) do |pkg|
         pkg.need_tar = true
       end
       
