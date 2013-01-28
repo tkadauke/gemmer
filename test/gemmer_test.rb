@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'test/unit'
-require File.dirname(__FILE__) + '/../src/gemmer'
+require 'gemmer'
 
 class GemmerTest < Test::Unit::TestCase
   def teardown
