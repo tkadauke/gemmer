@@ -1,6 +1,5 @@
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
-require 'active_support/core_ext'
 
 # Deprecated. Don't use.
 def gemmer(gem_name)
@@ -25,10 +24,10 @@ module Gemmer #:nodoc:
   #     t.release_via :scatter, :to => 'my_host_group'
   #   end
   class Tasks
-    attr_accessor_with_default(:gemspec_file) { "#{@gem_name}.gemspec" }
-    attr_accessor_with_default(:gemspec_erb_file) { "#{gemspec_file}.erb" }
-    attr_accessor_with_default :package_path, "pkg"
-    
+    attr_accessor :gemspec_file
+    attr_writer   :gemspec_erb_file
+    attr_accessor :package_path
+
     # contains the Gem::Specification instance
     attr_reader :spec
     
@@ -41,12 +40,18 @@ module Gemmer #:nodoc:
     # gemspec_erb_file:: relative path of an erb template for generating the gemspec file. Use this only if you need to (e.g. Github did not allow Dir.glob in gemspec files, so a workaround was to use an erb file to glob for the files locally and generate the gemspec file from that.)
     # package_path:: relative path under which the built gem is stored. Defaults to pkg
     def initialize(gem_name)
-      @gem_name = gem_name
+      @gem_name     = gem_name
+      @gemspec_file = "#{@gem_name}.gemspec"
+      @package_path = 'pkg'
       @release_destinations = {}
       yield self if block_given?
       define
     end
-    
+
+    def gemspec_erb_file
+      @gemspec_erb_file ||= "#{gemspec_file}.erb"
+    end
+
     # Add another release method. Available release methods are:
     #
     # - rubygems: Release the gem to rubygems.org
